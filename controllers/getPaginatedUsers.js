@@ -25,7 +25,7 @@ async function getPaginatedUsers(db, currentUser, page, pageSize = 20) {
     console.log('Excluded User IDs:', excludedUserIds.size);
   
     // Step 2: Find users matching the criteria
-    const maxDistanceInMeters = 1000000; // 10km radius
+    const maxDistanceInMeters = 10000000000000; // radius
     const geoNearStage = {
       $geoNear: {
         near: { type: 'Point', coordinates },

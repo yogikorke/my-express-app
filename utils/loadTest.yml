@@ -1,0 +1,16 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 1000
+      rampTo: 5000
+      name: "Simulate 10000 user"
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+scenarios:
+  - flow:
+    - loop:
+        - get:
+            url: "/healthcheck"
+        - count: 1000
