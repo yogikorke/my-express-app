@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const getPaginatedUsers = require('../controllers/getPaginatedUsers');
-const { MongoClient } = require('mongodb');
 const { ObjectId } = require('mongodb');
 
-const uri = 'mongodb://localhost:27017';
-
 router.get('/', async (req, res) => {
-  const client = new MongoClient(uri);
-  await client.connect();
-  const db = client.db('tinderApp');
+  const db = req.app.locals.db;
+
+  // console.log("req.query.userId: ", req.query.userId);
 
   const currentUser = {
     _id: new ObjectId(req.query.userId),
@@ -23,12 +20,11 @@ router.get('/', async (req, res) => {
 
   try {
     const users = await getPaginatedUsers(db, currentUser, page, pageSize);
+    // console.log("users: ", users);
     res.json(users);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
-  } finally {
-    await client.close();
   }
 });
 
